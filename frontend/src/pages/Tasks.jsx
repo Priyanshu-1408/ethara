@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../api';
 
 function Tasks() {
   const [tasks, setTasks] = useState([]);
@@ -20,7 +20,7 @@ function Tasks() {
       try {
         setLoading(true);
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
-        const { data } = await axios.get('http://localhost:5000/api/tasks', config);
+        const { data } = await axios.get('/tasks', config);
         setTasks(data);
         setLoading(false);
       } catch (err) {
@@ -36,7 +36,7 @@ function Tasks() {
   const updateStatus = async (id, status) => {
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      const { data } = await axios.put(`http://localhost:5000/api/tasks/${id}/status`, { status }, config);
+      const { data } = await axios.put(`/tasks/${id}/status`, { status }, config);
       setTasks(tasks.map(task => task._id === id ? data : task));
     } catch (error) {
       alert(error.response?.data?.message || 'Error updating status');

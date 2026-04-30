@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../api';
 
 function Register() {
   const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'Member' });
@@ -18,7 +18,7 @@ function Register() {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', formData);
+      const response = await axios.post('/auth/register', formData);
       if (response.data) {
         localStorage.setItem('user', JSON.stringify(response.data));
         navigate('/dashboard');

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../api';
 
 function Projects() {
   const [projects, setProjects] = useState([]);
@@ -22,7 +22,7 @@ function Projects() {
       try {
         setLoading(true);
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
-        const { data } = await axios.get('http://localhost:5000/api/projects', config);
+        const { data } = await axios.get('/projects', config);
         console.log('Projects API Response:', data);
         setProjects(data);
         setLoading(false);
@@ -40,7 +40,7 @@ function Projects() {
     e.preventDefault();
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      const { data } = await axios.post('http://localhost:5000/api/projects', { title: newTitle, description: newDesc }, config);
+      const { data } = await axios.post('/projects', { title: newTitle, description: newDesc }, config);
       setProjects([...projects, data]);
       setNewTitle('');
       setNewDesc('');

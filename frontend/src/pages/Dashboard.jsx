@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../api';
 
 function Dashboard() {
   const [tasks, setTasks] = useState([]);
@@ -28,20 +28,20 @@ function Dashboard() {
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
         
         // Fetch tasks
-        const { data: tasksData } = await axios.get('http://localhost:5000/api/tasks', config);
+        const { data: tasksData } = await axios.get('/tasks', config);
         setTasks(tasksData);
 
         // Fetch summary
-        const { data: summaryData } = await axios.get('http://localhost:5000/api/tasks/summary', config);
+        const { data: summaryData } = await axios.get('/tasks/summary', config);
         setSummary(summaryData);
 
         // Fetch projects for dropdown
-        const { data: projectsData } = await axios.get('http://localhost:5000/api/projects', config);
+        const { data: projectsData } = await axios.get('/projects', config);
         setProjects(projectsData);
 
         // Fetch users for assign dropdown (Admin only)
         if (user.role === 'Admin') {
-          const { data: usersData } = await axios.get('http://localhost:5000/api/auth/users', config);
+          const { data: usersData } = await axios.get('/auth/users', config);
           setSystemUsers(usersData);
         }
       } catch (error) {
@@ -70,7 +70,7 @@ function Dashboard() {
         assignedTo: newTaskAssignedTo || undefined
       };
 
-      const { data } = await axios.post('http://localhost:5000/api/tasks', payload, config);
+      const { data } = await axios.post('/tasks', payload, config);
       
       setTasks([...tasks, data]);
       setNewTaskTitle('');
@@ -93,11 +93,11 @@ function Dashboard() {
     if(user.role !== 'Admin') return alert("Only Admin can delete tasks");
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.delete(`http://localhost:5000/api/tasks/${id}`, config);
+      await axios.delete(`/tasks/${id}`, config);
       setTasks(tasks.filter(task => task._id !== id));
       
       // We could re-fetch summary here for accuracy
-      const { data: summaryData } = await axios.get('http://localhost:5000/api/tasks/summary', config);
+      const { data: summaryData } = await axios.get('/tasks/summary', config);
       setSummary(summaryData);
     } catch (error) {
       alert('Error deleting task');
