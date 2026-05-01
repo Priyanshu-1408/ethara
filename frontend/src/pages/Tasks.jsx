@@ -39,6 +39,7 @@ function Tasks() {
       const { data } = await axios.put(`/api/tasks/${id}/status`, { status }, config);
       setTasks(tasks.map(task => task._id === id ? data : task));
     } catch (error) {
+      console.error(error);
       alert(error.response?.data?.message || 'Error updating status');
     }
   };

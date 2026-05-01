@@ -25,6 +25,7 @@ function Register() {
         window.location.reload();
       }
     } catch (error) {
+      console.error(error);
       alert(error.response?.data?.message || 'Error registering');
     }
   };

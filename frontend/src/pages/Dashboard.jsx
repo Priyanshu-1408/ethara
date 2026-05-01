@@ -85,6 +85,7 @@ function Dashboard() {
         status: { ...prev.status, todo: prev.status.todo + 1 }
       }));
     } catch (error) {
+      console.error(error);
       alert(error.response?.data?.message || 'Error creating task');
     }
   };
@@ -100,6 +101,7 @@ function Dashboard() {
       const { data: summaryData } = await axios.get('/api/tasks/summary', config);
       setSummary(summaryData);
     } catch (error) {
+      console.error(error);
       alert('Error deleting task');
     }
   };
